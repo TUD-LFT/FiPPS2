@@ -1,0 +1,20 @@
+trim_cl
+F
+delta_aoa
+F
+aoa [°]
+  1.0000000000000000E+99
+cl_target [-]
+  0.5000000000000000E-00
+Re [-]
+  5.0000000000000000E+06
+Ma [-]
+  0.0000000000000000E+00
+q_infty [-]
+  0.0000000000000000E+00
+chordscale [-]
+  1.0000000000000000E+00
+Profilkoordinaten
+nlf1015_hd.dat
+Ergebnisdatei
+results.dat

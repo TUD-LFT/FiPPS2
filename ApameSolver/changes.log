@@ -1,0 +1,20 @@
+Changes from version 3.0 to 3.0.110109:
+- fixed: non-interactive mode enabled now
+- fixed: log file writting flushed to enforce each line being written
+- fixed: job name is trimed for spaces (if not given with path)
+- fixed: writting "nodal method" in log file was missing
+
+
+Changes from version 3.0.110109:
+- fixed: reader.sci - static, dynamic and manometer pressure were read only for first case
+- added/changed: panel types:
+    1  - quadrilateral body panel
+    2  - triangular body panel
+    10 - quadrilateral wake panel
+    11 - triangular wake panel
+    20 - quadrilateral dummy panel
+    21 - triangular dummy panel
+- added: for missing keywords default ones will be applied
+- fixed: line is limited to 100 characters when reading input file (changed to 200)
+- fixed: incorrect nodal interpolation method behavior at trailing edge
+- fixed: leading spaces in input file caused errors

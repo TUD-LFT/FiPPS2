@@ -1,0 +1,7 @@
+- accurate collocation point calculation is incorrect !!!!!!!!!!!!!!!!!!!!! - http://stackoverflow.com/questions/2355931/compute-the-centroid-of-a-3d-planar-polygon
+- COLLDIST fali u res fileu
+- source values reversely signed
+- origin not displayed for x = -0.0313
+- update tutorial - missing sample file sphere_2400.inp
+- check normal correction factor influence
+- structured triangular mesh yields poor velocity interpolation - check with cube model from Charles

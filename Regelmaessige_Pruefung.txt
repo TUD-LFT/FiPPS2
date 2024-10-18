@@ -1,0 +1,7 @@
+Notizen zu regelmäßig durchzuführenden Prüfungen:
+
+--------- Prüfung großer Arrays im Stack-memory ---------
+Anzeige potentiellen Auftretens durch:
+
+grep -ri 'dimension(' *.f90 | grep -vi 'allocatable\|intent' | grep -vi 'dimension([0-9\,\*]*)' > grep.txt
+---------------------------------------------------------

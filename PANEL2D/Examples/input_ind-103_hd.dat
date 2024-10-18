@@ -1,0 +1,20 @@
+trim_cl
+F
+delta_aoa
+F
+aoa [°]
+  2.0000000000000000E+00
+cl_target [-]
+  5.0000000000000000E-01
+Re [-]
+  5.0000000000000000E+07
+Ma [-]
+  5.0000000000000000E-01
+q_infty [N/mm]
+  0.0000000000000000E+00
+chordscale [-]
+  1.0000000000000000E+00
+Profilkoordinaten
+ind-103_hd.dat
+Ergebnisdatei
+results_ind-103_hd.dat
