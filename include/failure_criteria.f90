@@ -474,11 +474,11 @@ use failurecriteria_typen
         end if
         
         F11 = 1.d0 / (fcs%failHills(ifid)%RParTen * fcs%failHills(ifid)%RParCom)
-        F22 = 1.d0 / (fcs%failHills(ifid)%RParTen * fcs%failHills(ifid)%RNorCom)
+        F22 = 1.d0 / (fcs%failHills(ifid)%RNorTen * fcs%failHills(ifid)%RNorCom)
         F12 = fcs%failHills(ifid)%F12star * SQRT(F11 * F22)
         F66 = 1.d0 / (fcs%failHills(ifid)%RShear * fcs%failHills(ifid)%RShear)
         F1  = 1.d0 / fcs%failHills(ifid)%RParTen - 1.d0 / fcs%failHills(ifid)%RParCom
-        F2  = 1.d0 / fcs%failHills(ifid)%RParTen - 1.d0 / fcs%failHills(ifid)%RNorCom
+        F2  = 1.d0 / fcs%failHills(ifid)%RNorTen - 1.d0 / fcs%failHills(ifid)%RNorCom
         
         a = F11 * stresses(1)**2 + 2.d0 * F12 * stresses(1) * stresses(2) + F22 * stresses(2)**2 + F66 * stresses(3)**2
         b = F1 * stresses(1) + F2 * stresses(2)
