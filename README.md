@@ -1,6 +1,10 @@
 # FiPPS
 Finite Element solver FiPPS²
 
+# Manual
+
+A manual (currently available in German only) describing the basic usage of FiPPS² is available under https://github.com/TUD-LFT/FiPPS2_manual
+
 # Installation of required libraries
 
 ## PETSc
