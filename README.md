@@ -148,7 +148,7 @@ https://slepc.upv.es/download/
 
 ### 3. Customization
 
-Customizations described in [Part 1](#part-1) to [Part 2](#part-2) ensure that the Cholesky decomposition of the matrix is not carried out again for each eigenvalue calculation. The Cholesky decomposition should be available after the static calculation.
+Customizations described in [Part 1](#part-1) to [Part 3](#part-3) ensure that the Cholesky decomposition of the matrix is not carried out again for each eigenvalue calculation. The Cholesky decomposition should be available after the static calculation.
 
 #### Part 1
 
