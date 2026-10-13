@@ -64,4 +64,4 @@ $(LIBRARY): $(OBJ)
 	$(AR) $(AR_FLAGS) $(LIBRARY) $^
 
 clean::
-	$(RM) -rfv $(PROG).exe $(PROG) $(LIBRARY) $(OBJ_PATH) $(OBJ) $(MAIN) $(MOD_PATH)*.mod
+	$(RM) -rfv $(PROG).exe $(PROG) $(LIBRARY) $(OBJ) $(OBJ_PATH) $(MAIN) $(MOD_PATH)*.mod

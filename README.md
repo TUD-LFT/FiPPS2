@@ -44,7 +44,7 @@ https://petsc.org/release/download/
 
 Path, where PETSc can be found
 
-    export PETSC_DIR=/btmpl/Software/PETSC/petsc-3.16.1
+    export PETSC_DIR=/mnt/appl/x86_64/petsc/3.22.5
 
 ### 4. Configure
 
@@ -69,7 +69,7 @@ module load compiler mkl mpich \
   --download-metis-use-doubleprecision=1 \
   --download-parmetis=1 \
   --download-mumps=1 \
-  --prefix=/btmpl/Bibliotheken/petsc-3.22.5
+  --prefix=/mnt/appl/x86_64/petsc/3.22.5
 ```
 
 Explanation of the options:
@@ -343,7 +343,7 @@ Path where PETSc is found. Settings are taken from there.
 
 Path to which SLEPc has been unpacked.
 
-    export SLEPC_DIR=/btmpl/Software/PETSC/slepc-3.22.2
+    export SLEPC_DIR=/mnt/appl/x86_64/slepc/3.22.2_mod
 
 ### 6. Configuration
 
