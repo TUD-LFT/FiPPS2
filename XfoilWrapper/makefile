@@ -27,7 +27,12 @@ OBJ = $(patsubst %,$(OBJ_PATH)%,$(OBJS))
 
 MAIN = $(patsubst %,$(OBJ_PATH)%,$(MAINS))
 
-all: $(LIBRARY)
+.PHONY : mkobj
+
+mkobj:
+	mkdir -p $(OBJ_PATH)
+
+all: mkobj $(LIBRARY)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.f90
 	$(FC) $(FC_FLAGS) -c $< $(INC_PATH) -o $@
@@ -36,4 +41,4 @@ $(LIBRARY): $(OBJ)
 	$(AR) $(AR_FLAGS) $(LIBRARY) $^
 
 clean::
-	$(RM) -rfv $(LIBRARY) $(OBJ) $(MAIN) $(MOD_PATH)*.mod
+	$(RM) -rfv $(LIBRARY) $(OBJ) $(OBJ_PATH) $(MAIN) $(MOD_PATH)*.mod
