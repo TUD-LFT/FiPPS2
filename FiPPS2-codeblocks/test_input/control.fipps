@@ -1,0 +1,15 @@
+14
+node
+mat20
+plsolid
+lam20
+lsolid20
+force
+load
+spc1
+spcadd
+subcase
+sol=1
+blocksize=500
+outputvtk
+outputshort

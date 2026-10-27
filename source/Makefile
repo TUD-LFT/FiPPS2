@@ -4,8 +4,15 @@
 
 include ../makeconfig.mk
 
-PROGRAM := FiPPS
-OBJEKTE := \
+PROGRAM = FiPPS
+USER_LIBRARY = libuseroutput.so
+
+OBJ_PATH = ./obj
+MOD_PATH = ./mod
+INCL_PATH = ../include/mod
+LIB = -L.. -L../include -lmodules -Wl,-rpath,. $(USER_LIBRARY)
+
+OBJECTS := \
 write_quad_matrix.o \
 lsolid20_strain_displ_matrix.o \
 lsolid20_eps_th.o \
@@ -166,25 +173,40 @@ main.o \
 # write_matrix.o \
 # write_quad_matrix.o
 
+OBJECTS_ABS = $(patsubst %,$(OBJ_PATH)/%,$(OBJECTS))
+
 ###############################################################################
 ## rules follow
 ###############################################################################
-.PHONY: default clean
 
-all: $(PROGRAM)
+.PHONY: mkobj default debug
 
-$(PROGRAM): kompilieren move
+default flib_default : FCFLAGS = $(FC_DEF_FLAGS) -fpp
+debug flib_debug : FCFLAGS = $(FC_DBG_FLAGS) -fpp
+default debug : mkobj lnlib all
+flib_default flib_debug : mkobj flib
 
-kompilieren: 
-	-${FLINKER} -o $(PROGRAM) $(FIPPS2_LIB) $(APAME_LIB) $(PANEL2D_LIB) $(XFOILWRAPPER_LIB) ${SLEPC_LIB} -L../include/ -lmodule -L../ -luseroutput
+mkobj:
+	mkdir -p $(OBJ_PATH)
+	mkdir -p $(MOD_PATH)
 
+lnlib:
+	ln -sf ../$(USER_LIBRARY) .
+	
+all: $(PROGRAM) move
+
+$(OBJ_PATH)/%.o: %.f90
+	$(FC) $(FCFLAGS) -c $< -module $(MOD_PATH) -I$(INCL_PATH) $(SLEPC_INCLUDE) $(PETSC_FC_INCLUDES) -o $@
+
+$(PROGRAM) :
+	$(FC) -I$(INCL_PATH) $(SLEPC_INCLUDE) $(PETSC_FC_INCLUDES) -o $(PROGRAM) $(FIPPS2_LIB) $(LIB) $(APAME_LIB) $(PANEL2D_LIB) $(XFOILWRAPPER_LIB) $(SLEPC_LIB)
+	
 move:
-	$(MV) $(PROGRAM) ../.
+	$(MV) $(PROGRAM) ..
 
-#flib: $(OBJEKTE)
-
-flib: $(OBJEKTE)
+flib: $(OBJECTS_ABS)
 	$(AR) $(AR_FLAGS) $(FIPPS2_LIB) $^
 
 clean2: clean
-	$(RM) $(FIPPS2_LIB)
+	$(RM) -rf $(FIPPS2_LIB) $(OBJ_PATH) $(MOD_PATH)
+	$(RM) -f ./$(USER_LIBRARY)

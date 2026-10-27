@@ -1,18 +1,22 @@
 # Makefile
 # erzeugt das Programm apame
 
-include ../../makeconfig.mk
+include ../makeconfig.mk
 
-BIN_PATH := ../bin
+SRC_PATH = ./src
+OBJ_PATH = ./obj
+INC_PATH = ./include
+MOD_PATH = ./mod
+BIN_PATH = ./bin
 
-PROGRAM := apame
+PROGRAM = apame
 
-LIBRARY := apame.a
+LIBRARY = apame.a
 
-MAIN := \
+MAIN = \
 	apame.o
 
-OBJECTS :=  \
+OBJECTS =  \
 	module_kind_and_konst.o \
 	module_grid.o \
 	module_induced_drag.o \
@@ -42,17 +46,32 @@ OBJECTS :=  \
 	subr_write_ptot.o \
 	subr_write_time.o
 
+OBJECTS_ABS = $(patsubst %,$(OBJ_PATH)/%,$(OBJECTS))
+MAIN_ABS = $(patsubst %,$(OBJ_PATH)/%,$(MAIN))
+
 ###############################################################################
 ## rules follow
 ###############################################################################
-# .PHONY: default
 
-default all: $(PROGRAM) move
+.PHONY: mkobj default debug
 
-$(PROGRAM): $(LIBRARY) $(MAIN)
-	$(FC) -o $(PROGRAM) $(MAIN) $(BLASLAPACK_LIB) $(LIBRARY) $(LIB)
+default : FCFLAGS = $(FC_DEF_FLAGS)
+debug : FCFLAGS = $(FC_DBG_FLAGS)
+default debug : mkobj all
 
-$(LIBRARY): $(OBJECTS)
+mkobj:
+	mkdir -p $(OBJ_PATH)
+	mkdir -p $(MOD_PATH)
+
+all: $(PROGRAM) move
+
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.f90
+	$(FC) $(FCFLAGS) -c $< -module $(MOD_PATH) -I$(INC_PATH) -o $@
+	
+$(PROGRAM): $(LIBRARY) $(MAIN_ABS)
+	$(FC) -o $(PROGRAM) $(MAIN_ABS) $(BLASLAPACK_LIB) $(LIBRARY) $(LIB)
+
+$(LIBRARY): $(OBJECTS_ABS)
 	$(AR) $(AR_FLAGS) $(LIBRARY) $^
 
 move:
@@ -60,4 +79,5 @@ move:
 	$(MV) $(PROGRAM) $(BIN_PATH)
 
 clean::
-	rm -rf $(LIBRARY) $(BIN_PATH)
+	$(RM) -rf $(LIBRARY) $(BIN_PATH) $(OBJ_PATH) $(MOD_PATH)
+	$(RM) -f $(SRC_PATH)/*__genmod.f90

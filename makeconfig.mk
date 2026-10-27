@@ -21,15 +21,12 @@
 # makeconfig.mk:  common configuration file for FiPPS
 #===============================================================================
 
-VERSION=2.1.0
+VERSION=2.1.1
 REVISION=1
 
 #===============================================================================
 
-# fast - without debugging options
-# PETSC_DIR   = /mnt/appl/x86_64/petsc/3.22.5
-# SLEPC_DIR   = /mnt/appl/x86_64/slepc/3.22.2_mod
-APAME_LIB   = ../ApameSolver/src/apame.a
+APAME_LIB   = ../ApameSolver/apame.a
 PANEL2D_LIB = ../PANEL2D/panel2d.a
 XFOILWRAPPER_LIB = ../XfoilWrapper/xfoilwrapper.a
 FIPPS2_LIB  = libfipps.a
@@ -40,21 +37,9 @@ FIPPS := FiPPS
 FIPPS_VERSION := include/version.include
 
 # Fortran compiler
-# LFT
 FC  = mpif90
-# # HPC Barnard
 # FC  = mpiifort
 
-# Standardoptionen
-#FC_FLAGS = 
-#FC_FLAGS = -g -traceback -check all -warn unused -warn uninitialized -warn interfaces -check noarg_temp_created
-
-# Standardoptionen für die modifizierte SLEPC-Version
-FC_FLAGS = -Dmod_slepc
-#FC_FLAGS = -Dmod_slepc -Dvideo
-#FC_FLAGS = -Dmod_slepc -g -traceback -check all -warn unused -warn uninitialized -warn interfaces -check noarg_temp_created
-
-CFLAGS =
-FFLAGS = -fpp -fPIC -I../include/ -I../../include ${SLEPC_INCLUDE} ${PETSC_FC_INCLUDES}
-CPPFLAGS =
-FPPFLAGS =
+# Options for default and debug
+FC_DEF_FLAGS = -Dmod_slepc -O3 -fPIC
+FC_DBG_FLAGS = -Dmod_slepc -g -traceback -fPIC -O0 -check all -warn unused -warn uninitialized -warn interfaces -check noarg_temp_created
