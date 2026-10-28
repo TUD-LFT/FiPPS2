@@ -3,13 +3,15 @@
 
 include ../makeconfig.mk
 
-INCL   = -I../include/
-
 LIB = \
-	-L../include/ -lmodule \
+	-L../include/ -lmodules \
 	-L../source/ -lfipps
 
-LIBRARY := libuseroutput
+LIBRARY := libuseroutput.so
+
+OBJ_PATH = ./obj
+MOD_PATH = ./mod
+INCL_PATH = ../include/mod
 
 OBJECTS := \
  sol1_output_vtk.o \
@@ -17,22 +19,33 @@ OBJECTS := \
  sol2_output_vtk.o \
  sol2_output_user.o
 
+OBJECTS_ABS = $(patsubst %,$(OBJ_PATH)/%,$(OBJECTS))
+
 ###############################################################################
 ## rules follow
 ###############################################################################
-.PHONY: all clean
 
+.PHONY: default debug
+
+default : FCFLAGS = $(FC_DEF_FLAGS) -fpp
+debug : FCFLAGS = $(FC_DBG_FLAGS) -fpp
+default debug : mkobj all
+
+mkobj:
+	mkdir -p $(OBJ_PATH)
+	mkdir -p $(MOD_PATH)
+	
 all: $(LIBRARY) move
 
-$(LIBRARY): $(OBJECTS)
-	$(FC) $(FOPTS) -shared -o $(LIBRARY).so $(OBJECTS) $(LIB)
+$(LIBRARY): $(OBJECTS_ABS)
+	$(FC) $(FCFLAGS) -shared -o $(LIBRARY) $(OBJECTS_ABS) $(LIB)
 
 move:
-	$(MV) $(LIBRARY).so ../
+	$(MV) $(LIBRARY) ../
 	
 # rule for objects
-%.o : %.f90
-	$(FC) $(FOPTS) -fpp -fPIC $(INCL) -c $<
+$(OBJ_PATH)/%.o : %.f90
+	$(FC) $(FCFLAGS) -c $< -module $(MOD_PATH) -I$(INCL_PATH) -o $@
 
 clean2: clean
-	$(RM) ../$(LIBRARY).so
+	$(RM) -rf ../$(LIBRARY) $(OBJ_PATH) $(MOD_PATH)

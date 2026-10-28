@@ -3,9 +3,12 @@
 
 include ../makeconfig.mk
 
-PROGRAM := libmodule
+LIBRARY := libmodules.a
 
-MODULE := \
+OBJ_PATH = ./obj
+MOD_PATH = ./mod
+
+OBJECTS := \
  globale_variablen.o \
  eigenschaften_typen.o \
  element_typen.o \
@@ -30,15 +33,29 @@ MODULE := \
  integration_schemes.o \
  failure_criteria.o
 
+OBJECTS_ABS = $(patsubst %,$(OBJ_PATH)/%,$(OBJECTS))
+
 ###############################################################################
 ## rules follow
 ###############################################################################
-.PHONY: default clean
 
-all: $(PROGRAM)
+.PHONY: mkobj default debug
 
-$(PROGRAM): $(MODULE)
-	ar rcs $(PROGRAM).a $(MODULE) 
+default : FCFLAGS = $(FC_DEF_FLAGS) -fpp
+debug : FCFLAGS = $(FC_DBG_FLAGS) -fpp
+default debug : mkobj all
+
+mkobj:
+	mkdir -p $(OBJ_PATH)
+	mkdir -p $(MOD_PATH)
+
+all: $(LIBRARY)
+
+$(OBJ_PATH)/%.o: %.f90
+	$(FC) $(FCFLAGS) -c $< -module $(MOD_PATH) $(SLEPC_INCLUDE) $(PETSC_FC_INCLUDES) -o $@
+
+$(LIBRARY): $(OBJECTS_ABS)
+	$(AR) $(AR_FLAGS) $(LIBRARY) $(OBJECTS_ABS) 
 
 clean2: clean
-	$(RM) $(PROGRAM).a
+	$(RM) -rf $(LIBRARY) $(OBJ_PATH) $(MOD_PATH)

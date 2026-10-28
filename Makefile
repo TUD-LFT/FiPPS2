@@ -21,35 +21,30 @@
 # Makefile for FIPPS
 #-------------------------------------------------------------------------------
 
-ALL: all
-
 include makeconfig.mk
+
+.PHONY: default debug
+.DEFAULT_GOAL = default
+
+default : FCFLAGS = $(FC_DEF_FLAGS)
+debug : FCFLAGS = $(FC_DBG_FLAGS)
 
 # Compile the default rules for each package
 
-all:
-	( cd ApameSolver/src ; $(MAKE) all)
-	( cd PANEL2D ; $(MAKE) all)
-	( cd XfoilWrapper ; $(MAKE) all)
+default debug:
+	( cd ApameSolver ; $(MAKE) $@)
+	( cd PANEL2D ; $(MAKE) $@)
+	( cd XfoilWrapper ; $(MAKE) $@)
 	( echo -n "CHARACTER(len=10), PARAMETER :: version=\"$(VERSION)-R$(REVISION)" > $(FIPPS_VERSION) )
-	( svn info | grep -i revision | cut -f2 -d: | tr -d [:space:] >> $(FIPPS_VERSION) )
 	( echo -n "\"" >> $(FIPPS_VERSION) ) 
-	( cd include ; $(MAKE) all )
-	( cd source ; $(MAKE) flib )
-	( cd outputLibrary ; $(MAKE) all )
-	( cd source ; $(MAKE) all )
-
-# flib:
-# 	( cd ApameSolver/src ; $(MAKE) all)
-# 	( cd PANEL2D ; $(MAKE) all)
-# 	( cd XfoilWrapper ; $(MAKE) all)
-# 	( cd include ; $(MAKE) all )
-# 	( cd source ; $(MAKE) flib)
-# 	ar rcs libfipps.a include/*.o source/*.o
+	( cd include ; $(MAKE) $@ )
+	( cd source ; $(MAKE) flib_$@ )
+	( cd outputLibrary ; $(MAKE) $@ )
+	( cd source ; $(MAKE) $@ )
 
 # Remove all files
 clean::
-	( cd ApameSolver/src ; $(MAKE) clean)
+	( cd ApameSolver ; $(MAKE) clean)
 	( cd PANEL2D ; $(MAKE) clean)
 	( cd XfoilWrapper ; $(MAKE) clean)
 	( cd include ; $(MAKE) clean2 )
